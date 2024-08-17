@@ -23,6 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="HomeServer.py" />
+    <Compile Include="SensorsDatabase.py" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">
