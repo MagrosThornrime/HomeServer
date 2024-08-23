@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 
 
 SENSORS_FILE = "data/sensors.csv"
@@ -11,8 +12,8 @@ def get_sensors_data() -> list[SensorEntry]:
     try:
         with open(SENSORS_FILE, "r") as csv_file:
             sensors_reader = csv.reader(csv_file, delimiter=";")
-            for sensor, temperature, humidity in sensors_reader:
-                sensors_data.append((sensor, temperature, humidity))
+            for time, sensor, temperature, humidity in sensors_reader:
+                sensors_data.append((time, sensor, temperature, humidity))
     except FileNotFoundError:
         open(SENSORS_FILE, "w").close()
     finally:
@@ -20,7 +21,8 @@ def get_sensors_data() -> list[SensorEntry]:
     
 def add_sensors_entry(sensors_data: list[SensorEntry], sensor: int,
                       temperature: float, humidity: float):
-    sensors_data.append((sensor, temperature, humidity))
+    current_time = datetime.now().isoformat()
+    sensors_data.append((current_time, sensor, temperature, humidity))
     if len(sensors_data) > MAX_ENTRIES:
         del sensors_data[0]
     print(sensors_data)
