@@ -1,16 +1,19 @@
 from flask import Flask, render_template, request
 
-from SensorsDatabase import add_sensors_entry, get_sensors_data
+from SensorsDatabase import add_sensors_entry, get_sensor_entries
 
 app = Flask(__name__)
-sensors_data = get_sensors_data()
+sensor_entries = get_sensor_entries()
 
-@app.route("/sensor_entry", methods=["GET"])
+@app.route("/sensor_entry", methods=["POST"])
 def add_sensor_data():
-    sensor = int(request.args.get("sensor"))
-    temperature = float(request.args.get("temperature"))
-    humidity = float(request.args.get("humidity"))
-    add_sensors_entry(sensors_data, sensor, temperature, humidity)
+    try:
+        sensor = request.form["Czujnik"]
+    except KeyError:
+        print("Sensor's name not found")
+        return ""
+    data = request.form.to_dict()
+    add_sensors_entry(sensor_entries, sensor, data)
     return ""
     
 @app.route("/sensors")

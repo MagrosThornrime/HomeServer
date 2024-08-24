@@ -1,31 +1,27 @@
-import csv
+import json
 from datetime import datetime
 
 
-SENSORS_FILE = "data/sensors.csv"
+SENSORS_FILE = "data/sensors.json"
 MAX_ENTRIES = 100
 
-SensorEntry = tuple[int, float, float]
-
-def get_sensors_data() -> list[SensorEntry]:
-    sensors_data = []
+def get_sensor_entries() -> list[dict]:
+    sensor_entries = []
     try:
-        with open(SENSORS_FILE, "r") as csv_file:
-            sensors_reader = csv.reader(csv_file, delimiter=";")
-            for time, sensor, temperature, humidity in sensors_reader:
-                sensors_data.append((time, sensor, temperature, humidity))
+        with open(SENSORS_FILE, "r") as json_file:
+            sensor_entries = json.load(json_file)
     except FileNotFoundError:
         open(SENSORS_FILE, "w").close()
     finally:
-        return sensors_data
+        return sensor_entries
     
-def add_sensors_entry(sensors_data: list[SensorEntry], sensor: int,
-                      temperature: float, humidity: float):
+def add_sensors_entry(sensor_entries: list[dict], sensor: str, data: dict):
     current_time = datetime.now().isoformat()
-    sensors_data.append((current_time, sensor, temperature, humidity))
-    if len(sensors_data) > MAX_ENTRIES:
-        del sensors_data[0]
-    print(sensors_data)
-    with open(SENSORS_FILE, "w", newline="") as csv_file:
-        sensors_writer = csv.writer(csv_file, delimiter=";")
-        sensors_writer.writerows(sensors_data)
+    entry = {key: value for key, value in data.items() if key != "Czujnik"}
+    entry["Czujnik"] = sensor
+    entry["Czas"] = current_time
+    sensor_entries.append(entry)
+    if len(sensor_entries) > MAX_ENTRIES:
+        del sensor_entries[0]
+    with open(SENSORS_FILE, "w") as json_file:
+        json.dump(sensor_entries, json_file, indent=2)
