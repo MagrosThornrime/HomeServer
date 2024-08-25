@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request
 
-from SensorsDatabase import add_sensors_entry, get_sensor_entries
+import SensorsDatabase as sensors_db
 
 app = Flask(__name__)
-sensor_entries = get_sensor_entries()
+sensor_entries = sensors_db.get_entries()
 
 @app.route("/sensor_entry", methods=["POST"])
 def add_sensor_data():
@@ -13,12 +13,21 @@ def add_sensor_data():
         print("Sensor's name not found")
         return ""
     data = request.form.to_dict()
-    add_sensors_entry(sensor_entries, sensor, data)
+    sensors_db.add_entry(sensor_entries, sensor, data)
     return ""
     
 @app.route("/sensors")
 def sensors():
-    return render_template("sensors.html")
+    latest_entries = sensors_db.get_latest(sensor_entries)
+    return render_template("sensors.html", sensor_entries=latest_entries)
+
+@app.route("/sensors/<sensor>")
+def sensor_detailed(sensor: str):
+    # TODO: what if somebody uses the url but there are no entries for the sensor?
+    entries = sensors_db.get_sensor(sensor_entries, sensor)
+    sensors_db.create_plots(entries, sensor)
+    keys = sensors_db.get_keys(sensor_entries)
+    return render_template("sensors_detailed.html", sensor=sensor, keys=keys)
 
 @app.route("/guide")
 def guide():

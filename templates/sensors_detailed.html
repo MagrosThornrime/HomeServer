@@ -14,6 +14,7 @@
 </head>
 <body>
 
+    <!-- Create navigation bar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid bg-primary fixed-top">
             <div class="navbar-brand text-bg-primary"><i class=" bi bi-house"></i></div>
@@ -39,8 +40,17 @@
         </div>
     </nav>
 
-    <div class="container-fluid m-5">
-        <img src="/static/home.jpg" class="img-fluid" alt="Kotki" />
+    <!-- Show data from sensors -->
+    <div class="container-fluid mt-5">
+        <div class="d-flex flex-row flex-wrap">
+            {% for key in keys %}
+            <div class="card m-3 flex-fill">
+                <div class="card-body">
+                    <img src="/static/temp/{{sensor}}_{{key}}.png" class="card-img" alt="{{sensor}}_{{key}}" />
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 
     <!-- Load bootstrap scripts -->

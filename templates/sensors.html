@@ -14,7 +14,6 @@
 </head>
 <body>
 
-
     <!-- Create navigation bar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid bg-primary fixed-top">
@@ -44,63 +43,25 @@
     <!-- Show data from sensors -->
     <div class="container-fluid mt-5">
         <div class="d-flex flex-row flex-wrap">
+            {% for sensor_entry in sensor_entries %}
             <div class="card m-3 flex-fill">
-                <div class="card-header">21 grudnia 2137 21:37</div>
+                <div class="card-header">{{sensor_entry["Czas"]}}</div>
                 <div class="card-body">
-                    <h3 class="card-title">Podwórko</h3>
-                    <h6 class="card-subtitle">Temperatura</h6>
-                    <p class="card-text">36.6 stopni</p>
-                    <h6 class="card-subtitle">Wilgotność</h6>
-                    <p class="card-text">80%</p>
+                    <h3 class="card-title">{{sensor_entry["Czujnik"]}}</h3>
+                    {% for key, value in sensor_entry.items() if key not in ["Czas", "Czujnik"] %}
+                    <h6 class="card-subtitle">{{key}}</h6>
+                    <p class="card-text">{{value}}</p>
+                    {% endfor %}
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-primary d-block">Szczegóły</a>
+                    <a href="/sensors/{{sensor_entry["Czujnik"]}}" class="btn btn-primary d-block">Szczegóły</a>
                 </div>
             </div>
-            <div class="card m-3 flex-fill">
-                <div class="card-header">21 grudnia 2137 21:37</div>
-                <div class="card-body">
-                    <h3 class="card-title">Korytarz</h3>
-                    <h6 class="card-subtitle">Temperatura</h6>
-                    <p class="card-text">36.6 stopni</p>
-                    <h6 class="card-subtitle">Wilgotność</h6>
-                    <p class="card-text">80%</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary d-block">Szczegóły</a>
-                </div>
-            </div>
-            <div class="card m-3 flex-fill">
-                <div class="card-header">21 grudnia 2137 21:37</div>
-                <div class="card-body">
-                    <h3 class="card-title">Pokój Kłaka</h3>
-                    <h6 class="card-subtitle">Temperatura</h6>
-                    <p class="card-text">36.6 stopni</p>
-                    <h6 class="card-subtitle">Wilgotność</h6>
-                    <p class="card-text">80%</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary d-block">Szczegóły</a>
-                </div>
-            </div>
-            <div class="card m-3 flex-fill">
-                <div class="card-header">21 grudnia 2137 21:37</div>
-                <div class="card-body">
-                    <h3 class="card-title">Pokój Grześka</h3>
-                    <h6 class="card-subtitle">Temperatura</h6>
-                    <p class="card-text">36.6 stopni</p>
-                    <h6 class="card-subtitle">Wilgotność</h6>
-                    <p class="card-text">80%</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary d-block">Szczegóły</a>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 
-
-        <!-- Load bootstrap scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Load bootstrap scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
