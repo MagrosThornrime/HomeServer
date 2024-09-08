@@ -22,7 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="HomeServer.py" />
+    <Compile Include="HomeServer.txt" />
     <Compile Include="SensorsDatabase.py" />
   </ItemGroup>
   <ItemGroup>
